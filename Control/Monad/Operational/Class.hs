@@ -29,7 +29,7 @@ import Control.Monad.Trans.Identity
 import Control.Monad.Trans.Class
 import Data.Monoid
 
-class Monad m => Operational t m | m -> t where
+class Monad m => Operational t m  where
   -- | Construct an operational action from a single imperative.
   singleton :: t a -> m a
 
