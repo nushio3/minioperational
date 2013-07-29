@@ -68,3 +68,4 @@ instance (Operational f m) => Operational f (ListT m) where
 
 instance (Operational f m, Error e) => Operational f (ErrorT e m) where
   singleton = lift . singleton
+  

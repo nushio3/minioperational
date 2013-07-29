@@ -21,6 +21,7 @@ import Control.Monad
 import Control.Monad.Operational.Class
 import Control.Applicative
 import Control.Monad.Trans.Class
+import Control.Monad.IO.Class
 
 newtype ProgramT t m a = ProgramT { unProgram :: forall r. (a -> m r) -> (forall x. t x -> (x -> m r) -> m r) -> m r }
 
@@ -42,9 +43,11 @@ interpret e (ProgramT m) = m return (\t c -> e t >>= c)
 instance Operational t (ProgramT t m) where
     singleton t = ProgramT $ \p i -> i t p
 
+instance (MonadIO m) => MonadIO (ProgramT t m) where
+    liftIO = lift . liftIO
+  
 instance MonadTrans (ProgramT t) where
     lift m = ProgramT $ \p _ -> m >>= p
-
 
 infix 1 :>>=
 
